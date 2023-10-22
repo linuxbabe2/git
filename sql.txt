@@ -1,4 +1,5 @@
 CREATE SCHEMA videosalon AUTHORIZATION postgres;
+# comment
 
 CREATE TABLE videosalon.Фильмы (
    Код_фильма INTEGER PRIMARY KEY,
