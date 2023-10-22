@@ -1,16 +1,18 @@
 CREATE SCHEMA videosalon AUTHORIZATION postgres;
 
+CREATE TABLE videosalon.Поставщики (
+	Код_поставщика INTEGER PRIMARY KEY,
+	Наименование_поставщика VARCHAR(40) NOT NULL
+);
+
 CREATE TABLE videosalon.Фильмы (
 	Код_фильма INTEGER PRIMARY KEY,
+	Код_поставщика INTEGER,
+	FOREIGN KEY (Код_поставщика) REFERENCES videosalon.Поставщики (Код_поставщика),
 	Наименование_фильма VARCHAR(40) NOT NULL,
 	Жанр VARCHAR(20),
 	Длительность INTEGER,
 	Стоимость INT
-);
-
-CREATE TABLE videosalon.Поставщики (
-	Код_поставщика INTEGER PRIMARY KEY,
-	Наименование_поставщика VARCHAR(40) NOT NULL
 );
 
 CREATE TABLE videosalon.Клиенты (
@@ -47,5 +49,5 @@ CREATE TABLE videosalon.Прокаты (
 	FOREIGN KEY (Код_клиента) REFERENCES videosalon.Клиенты (Код_клиента),
 	FOREIGN KEY (Код_фильма) REFERENCES videosalon.Фильмы (Код_фильма),
 	FOREIGN KEY (Код_скидки) REFERENCES videosalon.Скидки (Код_скидки),
-	FOREIGN KEY (Код_штрафа) REFERENCES videosalon.Система_штрафов (Код_штрафа)
+	FOREIGN KEY (Код_штрафа) REFERENCES videosalon.Штрафы (Код_штрафа)
 );
