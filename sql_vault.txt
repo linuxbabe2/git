@@ -4,7 +4,7 @@ CREATE TABLE videosalon_vault.Sat_Поставщики (
     Код_поставщикаSatKey INTEGER PRIMARY KEY,
     Код_поставщикаKey INTEGER,
     Наименование_поставщика VARCHAR(40) NOT NULL,
-    Дата_загрузки DATETIME,
+    Дата_загрузки DATE,
     Источник_данных TEXT
 );
 
@@ -16,7 +16,7 @@ CREATE TABLE videosalon_vault.Sat_Фильмы (
     Жанр VARCHAR(20),
     Длительность INTEGER,
     Стоимость INT,
-    Дата_загрузки DATETIME,
+    Дата_загрузки DATE,
     Источник_данных TEXT
 );
 
@@ -27,7 +27,7 @@ CREATE TABLE videosalon_vault.Sat_Клиенты (
     Фамилия CHARACTER VARYING(30),
     Email CHARACTER VARYING(30),
     Возраст INTEGER,
-    Дата_загрузки DATETIME,
+    Дата_загрузки DATE,
     Источник_данных TEXT
 );
 
@@ -36,7 +36,7 @@ CREATE TABLE videosalon_vault.Sat_Штрафы (
     Код_штрафаKey INTEGER,
     Наименование_штрафа CHARACTER VARYING(30),
     Сумма_штрафа INT,
-    Дата_загрузки DATETIME,
+    Дата_загрузки DATE,
     Источник_данных TEXT
 );
 
@@ -45,7 +45,7 @@ CREATE TABLE videosalon_vault.Sat_Скидки (
     Код_скидкиKey INTEGER,
     Наименование_скидки CHARACTER VARYING(30),
     Процент_скидки INT,
-    Дата_загрузки DATETIME,
+    Дата_загрузки DATE,
     Источник_данных TEXT
 );
 
@@ -61,29 +61,29 @@ CREATE TABLE videosalon_vault.Sat_Прокаты (
     Дата_возврата DATE,
     Сумма INT,
     Итоговая_сумма INT,
-    Дата_загрузки DATETIME,
+    Дата_загрузки DATE,
     Источник_данных TEXT
 );
 
 CREATE TABLE videosalon_vault.Hub_Фильмы (
     Код_фильмаKey INTEGER PRIMARY KEY,
     Код_фильмаID INTEGER,
-    Дата_загрузки DATETIME,
-    Источник_данныхTEXT
+    Дата_загрузки DATE,
+    Источник_данных TEXT
 );
 
 CREATE TABLE videosalon_vault.Hub_Поставщики (
     Код_поставщикаKey INTEGER PRIMARY KEY,
     Код_поставщикаID INTEGER,
-    Дата_загрузки DATETIME,
-    Источник_данныхTEXT
+    Дата_загрузки DATE,
+    Источник_данных TEXT
 );
 
 CREATE TABLE videosalon_vault.Link_Фильмы_Поставщики (
     Код_фильмаKey INTEGER,
     Код_поставщикаKey INTEGER,
-    Дата_загрузки DATETIME,
-    Источник_данных TEXT
+    Дата_загрузки DATE,
+    Источник_данных text,
     PRIMARY KEY (Код_фильмаKey, Код_поставщикаKey),
     FOREIGN KEY (Код_фильмаKey) REFERENCES videosalon_vault.Hub_Фильмы (Код_фильмаKey),
     FOREIGN KEY (Код_поставщикаKey) REFERENCES videosalon_vault.Hub_Поставщики (Код_поставщикаKey)
@@ -92,38 +92,38 @@ CREATE TABLE videosalon_vault.Link_Фильмы_Поставщики (
 CREATE TABLE videosalon_vault.Hub_Скидки (
     Код_скидкиKey INTEGER PRIMARY KEY,
     Код_скидкиID INTEGER,
-    Дата_загрузки DATETIME,
+    Дата_загрузки DATE,
     Источник_данных TEXT
 );
 
 CREATE TABLE videosalon_vault.Link_Фильмы_Скидки (
     Код_фильмаKey INTEGER,
     Код_скидкиKey INTEGER,
-    Дата_загрузки DATETIME,
+    Дата_загрузки DATE,
     Источник_данных TEXT,
     PRIMARY KEY (Код_фильмаKey, Код_скидкиKey),
     FOREIGN KEY (Код_фильмаKey) REFERENCES videosalon_vault.Hub_Фильмы (Код_фильмаKey),
-    FOREIGN KEY (Код_скидкиKey) REFERENCES videosalon_vault.Hub_Скидки (Код_СкидкиKey)
+    FOREIGN KEY (Код_скидкиKey) REFERENCES videosalon_vault.Hub_Скидки (Код_скидкиKey)
 );
 
 CREATE TABLE videosalon_vault.Hub_Клиенты (
     Код_клиентаKey INTEGER PRIMARY KEY,
     Код_клиентаID INTEGER,    
-    Дата_загрузки DATETIME,
+    Дата_загрузки DATE,
     Источник_данных TEXT
 );
 
 CREATE TABLE videosalon_vault.Hub_Прокаты (
     Код_прокатаKey INTEGER PRIMARY KEY,
     Код_прокатаID INTEGER,    
-    Дата_загрузки DATETIME,
+    Дата_загрузки DATE,
     Источник_данных TEXT
 );
 
 CREATE TABLE videosalon_vault.Link_Прокаты_Клиенты (
     Код_прокатаKey INTEGER,
     Код_клиентаKey INTEGER,
-    Дата_загрузки DATETIME,
+    Дата_загрузки DATE,
     Источник_данных TEXT,
     PRIMARY KEY (Код_прокатаKey, Код_клиентаKey),    
     FOREIGN KEY (Код_прокатаKey) REFERENCES videosalon_vault.Hub_Прокаты (Код_прокатаKey),
@@ -133,22 +133,16 @@ CREATE TABLE videosalon_vault.Link_Прокаты_Клиенты (
 CREATE TABLE videosalon_vault.Hub_Штрафы (
     Код_штрафаKey INTEGER PRIMARY KEY,
     Код_штрафаID INTEGER,
-    Дата_загрузки DATETIME,
+    Дата_загрузки DATE,
     Источник_данных TEXT
 );
 
 CREATE TABLE videosalon_vault.Link_Прокаты_Штрафы (
     Код_прокатаKey INTEGER,
     Код_штрафаKey INTEGER,    
-    Дата_загрузки DATETIME,
+    Дата_загрузки DATE,
     Источник_данных TEXT,
     PRIMARY KEY (Код_прокатаKey, Код_штрафаKey),
     FOREIGN KEY (Код_прокатаKey) REFERENCES videosalon_vault.Hub_Прокаты  (Код_прокатаKey),
     FOREIGN KEY (Код_штрафаKey) REFERENCES videosalon_vault.Hub_Штрафы (Код_штрафаKey)
 );
-
-
-
-
-
-
