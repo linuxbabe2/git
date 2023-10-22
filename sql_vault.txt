@@ -1,54 +1,102 @@
 CREATE SCHEMA videosalon AUTHORIZATION postgres;
 
-CREATE TABLE videosalon.Фильмы (
-   Код_фильма INTEGER PRIMARY KEY,
-   Наименование_фильма VARCHAR(40) NOT NULL,
-   Жанр VARCHAR(20),
-   Длительность INTEGER,
-   Стоимость INT
+CREATE TABLE Sat_Система_штрафов (
+    Код_штрафаSatKey INTEGER PRIMARY KEY AUTOINCREMENT,
+    Код_штрафа INTEGER,
+    Наименование_штрафа CHARACTER VARYING(30),
+    Сумма_штрафа int
 );
 
-CREATE TABLE videosalon.Поставщики (
-    Код_поставщика INTEGER PRIMARY KEY,
+CREATE TABLE Sat_Поставщики (
+    Код_поставщикаSatKey INTEGER PRIMARY KEY AUTOINCREMENT,
+    Код_поставщика INTEGER,
     Наименование_поставщика VARCHAR(40) NOT NULL
 );
 
-CREATE TABLE videosalon.Клиенты (
-	Код_клиента	INTEGER PRIMARY KEY,
-	Имя CHARACTER VARYING(30),
-	Фамилия CHARACTER VARYING(30),
-	Email CHARACTER VARYING(30),
-	Возраст INTEGER
+CREATE TABLE Sat_Скидки (
+    Код_скидкиSatKey INTEGER PRIMARY KEY AUTOINCREMENT,
+    Код_скидки INTEGER,
+    Наименование_скидки CHARACTER VARYING(30),
+    Процент_скидки int
 );
 
-CREATE TABLE videosalon.Система_штрафов (
-	Код_штрафа INTEGER PRIMARY KEY,
-	Наименование_штрафа CHARACTER VARYING(30),
-	Сумма_штрафа int
+CREATE TABLE Sat_Фильмы (
+    Код_фильмаSatKey INTEGER PRIMARY KEY AUTOINCREMENT,
+    Код_фильма INTEGER,
+    Наименование_фильма VARCHAR(40) NOT NULL,
+    Жанр VARCHAR(20),
+    Длительность INTEGER,
+    Стоимость INT
 );
 
-CREATE TABLE videosalon.Скидки (
-	Код_скидки INTEGER PRIMARY KEY,
-	Наименование_скидки CHARACTER VARYING(30),
-	Процент_скидки int
+CREATE TABLE Sat_Прокаты (
+    Код_прокатаSatKey INTEGER PRIMARY KEY AUTOINCREMENT,
+    Код_клиента INTEGER,
+    Код_фильма INTEGER,
+    Код_скидки INTEGER,
+    Код_штрафа INTEGER,
+    Дата_проката DATE,
+    Количество_дней INTEGER,
+    Дата_возврата DATE,
+    Сумма INT,
+    Итоговая_сумма INT
 );
 
-CREATE TABLE videosalon.Прокаты (
-	Код_проката	INTEGER PRIMARY KEY,
-	Код_клиента INTEGER REFERENCES videosalon.Клиенты (Код_клиента),
-	Код_фильма INTEGER REFERENCES videosalon.Фильмы (Код_фильма),
-	Дата_проката DATE,
-	Количество_дней INTEGER,
-	Дата_возврата DATE,
-	Сумма INT,
-	Код_скидки INTEGER REFERENCES videosalon.Скидки (Код_скидки),
-	Код_штрафа INTEGER REFERENCES videosalon.Система_штрафов (Код_штрафа),
-	Итоговая_сумма INT
+CREATE TABLE Link_Фильмы_Поставщики (
+    Код_фильма INTEGER,
+    Код_поставщика INTEGER,
+    LoadDate DATETIME,
+    RecordSource TEXT,
+    PRIMARY KEY (SportingФильмыKey, ПоставщикиKey),
+    FOREIGN KEY (SportingФильмыKey) REFERENCES Hub_Фильмы (SportingФильмыKey),
+    FOREIGN KEY (ПоставщикиKey) REFERENCES Hub_Поставщики (ПоставщикиKey)
 );
 
-CREATE TABLE videosalon.Штрафы_по_прокату (
-	Код_отчета INTEGER PRIMARY KEY,
-	Код_проката INTEGER REFERENCES videosalon.Прокаты (Код_проката),
-	Код_штрафа INTEGER REFERENCES videosalon.Система_штрафов (Код_штрафа),
-	Наименование_штрафа	CHARACTER VARYING(30)
+CREATE TABLE Hub_Система_штрафов (
+    Система_штрафовKey INTEGER PRIMARY KEY AUTOINCREMENT,
+    Система_штрафовID INTEGER,
+    LoadDate DATETIME,
+    RecordSource TEXT
 );
+
+CREATE TABLE Link_Фильмы_Скидки (
+    SportingФильмыKey INTEGER,
+    СкидкиKey INTEGER,
+    LoadDate DATETIME,
+    RecordSource TEXT,
+    PRIMARY KEY (SportingФильмыKey, СкидкиKey),
+    FOREIGN KEY (SportingФильмыKey) REFERENCES Hub_Фильмы (SportingФильмыKey),
+    FOREIGN KEY (СкидкиKey) REFERENCES Hub_Скидки (СкидкиKey)
+);
+
+CREATE TABLE Hub_Скидки (
+    СкидкиKey INTEGER PRIMARY KEY AUTOINCREMENT,
+    СкидкиID INTEGER,
+    LoadDate DATETIME,
+    RecordSource TEXT
+);
+
+CREATE TABLE Hub_Поставщики (
+    ПоставщикиKey INTEGER PRIMARY KEY AUTOINCREMENT,
+    ПоставщикиID INTEGER,
+    LoadDate DATETIME,
+    RecordSource TEXT
+);
+
+CREATE TABLE Link_Фильмы_Система_штрафов (
+    SportingФильмыKey INTEGER,
+    Система_штрафовKey INTEGER,
+    LoadDate DATETIME,
+    RecordSource TEXT,
+    PRIMARY KEY (SportingФильмыKey, Система_штрафовKey),
+    FOREIGN KEY (SportingФильмыKey) REFERENCES Hub_Фильмы (SportingФильмыKey),
+    FOREIGN KEY (Система_штрафовKey) REFERENCES Hub_Система_штрафов (Система_штрафовKey)
+);
+
+CREATE TABLE Hub_Фильмы (
+    SportingФильмыKey INTEGER PRIMARY KEY AUTOINCREMENT,
+    ФильмыID INTEGER,
+    LoadDate DATETIME,
+    RecordSource TEXT
+);
+

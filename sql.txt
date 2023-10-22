@@ -1,55 +1,51 @@
 CREATE SCHEMA videosalon AUTHORIZATION postgres;
-# comment
 
 CREATE TABLE videosalon.Фильмы (
-   Код_фильма INTEGER PRIMARY KEY,
-   Наименование_фильма VARCHAR(40) NOT NULL,
-   Жанр VARCHAR(20),
-   Длительность INTEGER,
-   Стоимость INT
+	Код_фильма INTEGER PRIMARY KEY,
+	Наименование_фильма VARCHAR(40) NOT NULL,
+	Жанр VARCHAR(20),
+	Длительность INTEGER,
+	Стоимость INT
 );
 
 CREATE TABLE videosalon.Поставщики (
-    Код_поставщика INTEGER PRIMARY KEY,
-    Наименование_поставщика VARCHAR(40) NOT NULL
+	Код_поставщика INTEGER PRIMARY KEY,
+	Наименование_поставщика VARCHAR(40) NOT NULL
 );
 
 CREATE TABLE videosalon.Клиенты (
-	Код_клиента	INTEGER PRIMARY KEY,
+	Код_клиента INTEGER PRIMARY KEY,
 	Имя CHARACTER VARYING(30),
 	Фамилия CHARACTER VARYING(30),
 	Email CHARACTER VARYING(30),
 	Возраст INTEGER
 );
 
-CREATE TABLE videosalon.Система_штрафов (
+CREATE TABLE videosalon.Штрафы (
 	Код_штрафа INTEGER PRIMARY KEY,
 	Наименование_штрафа CHARACTER VARYING(30),
-	Сумма_штрафа int
+	Сумма_штрафа INT
 );
 
 CREATE TABLE videosalon.Скидки (
 	Код_скидки INTEGER PRIMARY KEY,
 	Наименование_скидки CHARACTER VARYING(30),
-	Процент_скидки int
+	Процент_скидки INT
 );
 
 CREATE TABLE videosalon.Прокаты (
-	Код_проката	INTEGER PRIMARY KEY,
-	Код_клиента INTEGER REFERENCES videosalon.Клиенты (Код_клиента),
-	Код_фильма INTEGER REFERENCES videosalon.Фильмы (Код_фильма),
+	Код_проката INTEGER PRIMARY KEY,
+	Код_клиента INTEGER,
+	Код_фильма INTEGER,
+	Код_скидки INTEGER,
+	Код_штрафа INTEGER,
 	Дата_проката DATE,
 	Количество_дней INTEGER,
 	Дата_возврата DATE,
 	Сумма INT,
-	Код_скидки INTEGER REFERENCES videosalon.Скидки (Код_скидки),
-	Код_штрафа INTEGER REFERENCES videosalon.Система_штрафов (Код_штрафа),
-	Итоговая_сумма INT
-);
-
-CREATE TABLE videosalon.Штрафы_по_прокату (
-	Код_отчета INTEGER PRIMARY KEY,
-	Код_проката INTEGER REFERENCES videosalon.Прокаты (Код_проката),
-	Код_штрафа INTEGER REFERENCES videosalon.Система_штрафов (Код_штрафа),
-	Наименование_штрафа	CHARACTER VARYING(30)
+	Итоговая_сумма INT,
+	FOREIGN KEY (Код_клиента) REFERENCES videosalon.Клиенты (Код_клиента),
+	FOREIGN KEY (Код_фильма) REFERENCES videosalon.Фильмы (Код_фильма),
+	FOREIGN KEY (Код_скидки) REFERENCES videosalon.Скидки (Код_скидки),
+	FOREIGN KEY (Код_штрафа) REFERENCES videosalon.Система_штрафов (Код_штрафа)
 );
